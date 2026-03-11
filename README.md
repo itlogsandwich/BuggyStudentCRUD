@@ -11,6 +11,8 @@ This is a **Student Records Management System** built with ASP.NET Core 6.0 MVC 
 - [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed on your machine
 - A code editor (Visual Studio 2022, VS Code, or Rider)
 - Git installed
+- SQL Server LocalDB (comes with Visual Studio) or SQL Server Express
+- EF Core CLI tool: `dotnet tool install --global dotnet-ef`
 
 ---
 
@@ -23,11 +25,15 @@ git clone https://github.com/mahmenxx/BuggyStudentCRUD.git
 cd BuggyStudentCRUD
 ```
 
-### 2. Restore Packages
+### 2. Run the Scaffold Script
 
 ```bash
-dotnet restore
+scaffold.bat
 ```
+
+This will restore packages, create the initial database migration, and apply it to your LocalDB instance.
+
+> **Note:** If you don't have the EF Core CLI tool installed, run `dotnet tool install --global dotnet-ef` first.
 
 ### 3. Run the Application
 
@@ -38,7 +44,7 @@ dotnet run
 
 The app will start on `https://localhost:5001` or `http://localhost:5000`. Open it in your browser.
 
-> **Note:** The app uses an **in-memory database**, so data resets every time you restart the application. Five sample students are seeded automatically.
+> **Note:** The app uses **SQL Server LocalDB**. Five sample students are seeded automatically on first run.
 
 ---
 
@@ -120,7 +126,7 @@ Create a document (PDF or DOCX) with the following for **each bug** you find:
 
 - **DO NOT** look at the git blame or commit messages for hints about the bugs
 - Work **individually** unless your instructor says otherwise
-- The in-memory database means no database setup is required
+- Make sure you've run `scaffold.bat` before running the application
 - If the app crashes, read the exception message — it's a clue!
 - There are exactly **7 bugs** — keep looking until you find them all
 
@@ -129,7 +135,7 @@ Create a document (PDF or DOCX) with the following for **each bug** you find:
 ## 🛠 Tech Stack
 
 - **Framework:** ASP.NET Core 6.0 MVC
-- **ORM:** Entity Framework Core 6.0 (In-Memory Provider)
+- **ORM:** Entity Framework Core 6.0 (SQL Server)
 - **Frontend:** Bootstrap 5, Font Awesome 6
 - **Language:** C# 10
 
