@@ -141,4 +141,61 @@ Create a document (PDF or DOCX) with the following for **each bug** you find:
 
 ---
 
+## ❓ Frequently Asked Questions
+
+**Q: Do I need to create the database manually in SSMS?**
+No. The `scaffold.bat` script handles everything — it creates the migration files and applies them to automatically create the database in LocalDB. You do **not** need to open SQL Server Management Studio or manually create any database.
+
+**Q: What is LocalDB?**
+LocalDB is a lightweight version of SQL Server that comes pre-installed with Visual Studio. It runs on demand and requires no configuration. Your database files are stored automatically under your user profile.
+
+**Q: How do I check if LocalDB is installed?**
+Open a terminal and run:
+```bash
+sqllocaldb info
+```
+You should see `MSSQLLocalDB` listed. If not, install it via the Visual Studio Installer under **Individual Components → SQL Server Express LocalDB**.
+
+**Q: I get an error saying `dotnet-ef` is not recognized. What do I do?**
+Install the EF Core CLI tool globally by running:
+```bash
+dotnet tool install --global dotnet-ef
+```
+Then close and reopen your terminal before running `scaffold.bat` again.
+
+**Q: I get a connection error when running the app. How do I fix it?**
+Make sure LocalDB is running. You can start it manually with:
+```bash
+sqllocaldb start MSSQLLocalDB
+```
+If that doesn't work, check that your `appsettings.json` connection string matches your local setup. If you're using SQL Server Express instead of LocalDB, update the `Server` value to `Server=.\SQLEXPRESS` or `Server=YOUR_PC_NAME\SQLEXPRESS`.
+
+**Q: The scaffold script says "migration already exists." What do I do?**
+If a `Migrations` folder already exists in the project, delete it and run `scaffold.bat` again:
+```bash
+rmdir /s /q BuggyStudentCRUD\Migrations
+scaffold.bat
+```
+
+**Q: How do I reset the database and start fresh?**
+Run the following commands from the `BuggyStudentCRUD` project folder:
+```bash
+dotnet ef database drop --force
+dotnet ef database update
+```
+This will delete the existing database and recreate it. The seed data will be re-inserted on the next app run.
+
+**Q: Can I view the database tables and data?**
+Yes. You can connect to the database using:
+- **SQL Server Management Studio (SSMS)** — connect to `(localdb)\mssqllocaldb`
+- **Visual Studio** — open **View → SQL Server Object Explorer**
+- **Azure Data Studio** — connect to `(localdb)\mssqllocaldb`
+
+Look for the database named `BuggyStudentCRUDDb`.
+
+**Q: The app runs but no students appear on the list. Why?**
+This could be one of the bugs you need to find, or the database may not have been seeded. Try resetting the database (see above). If students still don't appear, investigate the controller code — that's a hint! 😉
+
+---
+
 Good luck and happy debugging! 🔍
