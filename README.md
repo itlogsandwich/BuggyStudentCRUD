@@ -132,7 +132,7 @@ This application contains **7 bugs** spread across the **Model**, **Views**, and
 2. **Run the application** and test every feature
 3. **Identify each bug** by observing unexpected behavior
 4. **Fix each bug** in the source code
-5. **Document your findings** (see Submission section below)
+
 
 ### Features to Test
 
@@ -181,25 +181,6 @@ BuggyStudentCRUD/
 
 ---
 
-## 📝 Submission Requirements
-
-Create a document (PDF or DOCX) with the following for **each bug** you find:
-
-1. **Bug #**: Number it sequentially
-2. **Location**: File name and line number(s)
-3. **Description**: What is wrong and what incorrect behavior it causes
-4. **Fix**: The corrected code
-5. **Explanation**: Why the fix works
-
-### Example:
-
-> **Bug #1**
-> - **Location:** `Controllers/ExampleController.cs`, Line 42
-> - **Description:** The method returns `null` instead of a valid view, causing a 500 error
-> - **Fix:** Changed `return null;` to `return View();`
-> - **Explanation:** The action method must return an `IActionResult`; returning null crashes the MVC pipeline
-
----
 
 ## ⚠️ Important Notes
 
