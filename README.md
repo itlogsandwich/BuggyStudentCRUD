@@ -8,34 +8,78 @@ This is a **Student Records Management System** built with ASP.NET Core 6.0 MVC 
 
 ## 📋 Prerequisites
 
-- [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) installed on your machine
-- A code editor (Visual Studio 2022, VS Code, or Rider)
-- Git installed
-- SQL Server LocalDB (comes with Visual Studio) or SQL Server Express
-- EF Core CLI tool: `dotnet tool install --global dotnet-ef`
+Before you begin, make sure you have the following installed on your machine:
+
+- [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- A code editor — **Visual Studio 2022** (recommended), VS Code, or Rider
+- [Git](https://git-scm.com/downloads)
+- **SQL Server** — one of the following:
+  - SQL Server LocalDB (comes with Visual Studio)
+  - SQL Server Express
+  - Full SQL Server instance
+- **SQL Server Management Studio (SSMS)** or **Azure Data Studio** — for creating and viewing your database
+- EF Core CLI tool (install via terminal):
+  ```bash
+  dotnet tool install --global dotnet-ef
+  ```
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Clone the Repository
+### Step 1: Clone the Repository
 
 ```bash
 git clone https://github.com/mahmenxx/BuggyStudentCRUD.git
 cd BuggyStudentCRUD
 ```
 
-### 2. Run the Scaffold Script
+### Step 2: Create the Database
+
+> ⚠️ **You are required to create the database yourself.** This is part of the practical exercise.
+
+Open `appsettings.json` inside the `BuggyStudentCRUD` project folder — this file contains all the clues you need:
+
+```json
+"ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=________;..."
+}
+```
+
+📌 **Look at the connection string carefully.** The `Database=` value tells you **exactly what database name to create**.
+
+**To create the database:**
+
+1. Open **SQL Server Management Studio (SSMS)** or **Azure Data Studio**
+2. Connect to your SQL Server instance:
+   - If using LocalDB: connect to `(localdb)\mssqllocaldb`
+   - If using SQL Server Express: connect to `.\SQLEXPRESS` or `YOUR_PC_NAME\SQLEXPRESS`
+3. Right-click on **Databases** → **New Database...**
+4. Enter the database name **exactly as it appears** in `appsettings.json`
+5. Click **OK**
+
+> 💡 **Tip:** If you're using SQL Server Express or a named instance instead of LocalDB, you'll also need to update the `Server=` value in `appsettings.json` to match your setup (e.g., `Server=.\SQLEXPRESS`).
+
+### Step 3: Run the Scaffold Script
+
+Once your database is created, run the scaffold script to set up the tables:
 
 ```bash
 scaffold.bat
 ```
 
-This will restore packages, create the initial database migration, and apply it to your LocalDB instance.
+This will:
+- Restore NuGet packages
+- Create the EF Core migration files
+- Apply the migration to your database (creating the `Students` table)
 
-> **Note:** If you don't have the EF Core CLI tool installed, run `dotnet tool install --global dotnet-ef` first.
+> **Note:** If you get an error saying `dotnet-ef` is not recognized, install it first:
+> ```bash
+> dotnet tool install --global dotnet-ef
+> ```
+> Then **close and reopen** your terminal before running `scaffold.bat` again.
 
-### 3. Run the Application
+### Step 4: Run the Application
 
 ```bash
 cd BuggyStudentCRUD
@@ -44,7 +88,7 @@ dotnet run
 
 The app will start on `https://localhost:5001` or `http://localhost:5000`. Open it in your browser.
 
-> **Note:** The app uses **SQL Server LocalDB**. Five sample students are seeded automatically on first run.
+> **Note:** Five sample students are seeded automatically on first run. If you don't see any students, check the Troubleshooting section below.
 
 ---
 
@@ -52,29 +96,31 @@ The app will start on `https://localhost:5001` or `http://localhost:5000`. Open 
 
 This application contains **7 bugs** spread across the **Model**, **Views**, and **Controllers**. Your job is to:
 
-1. **Run the application** and test every feature
-2. **Identify each bug** by observing unexpected behavior
-3. **Fix each bug** in the source code
-4. **Document your findings** (see Submission section below)
+1. **Set up** the project and database by following the steps above
+2. **Run the application** and test every feature
+3. **Identify each bug** by observing unexpected behavior
+4. **Fix each bug** in the source code
+5. **Document your findings** (see Submission section below)
 
 ### Features to Test
 
 | Feature | What to Test |
 |---------|-------------|
-| **Student List** | Search functionality, sorting by columns |
-| **View Details** | Click on a student to see their full info |
-| **Create Student** | Add a new student with valid data |
-| **Edit Student** | Modify an existing student's information |
-| **Delete Student** | Remove a student record |
-| **Validation** | Try entering invalid data (empty fields, bad GPA values) |
+| **Student List** | Does the search bar work? Can you sort by columns? |
+| **View Details** | Click on a student — does it show the correct info? |
+| **Create Student** | Fill in all fields with valid data and submit. Does it save? |
+| **Edit Student** | Modify a student's information. Does it update properly? |
+| **Delete Student** | Remove a student. Is it actually deleted? |
+| **Validation** | Try entering invalid data (empty fields, out-of-range GPA). What happens? |
 
 ### 💡 Hints
 
-- Bugs are in the **Controller logic**, **View templates**, and **Model validation**
+- Bugs are in the **Controller logic**, **View templates**, and **Model/View validation**
 - Pay close attention to what happens vs. what *should* happen
 - Use the browser's developer tools (F12) to inspect network requests if needed
 - Read error messages carefully — they often point to the root cause
 - Compare the code to what standard CRUD operations should look like
+- Look at **operators**, **method names**, and **conditional logic** closely
 
 ---
 
@@ -84,20 +130,21 @@ This application contains **7 bugs** spread across the **Model**, **Views**, and
 BuggyStudentCRUD/
 ├── Controllers/
 │   ├── HomeController.cs          # Home page controller
-│   └── StudentsController.cs      # CRUD operations (bugs here!)
+│   └── StudentsController.cs      # Student CRUD operations
 ├── Data/
 │   ├── ApplicationDbContext.cs     # EF Core database context
 │   └── SeedData.cs                # Sample data seeder
 ├── Models/
-│   ├── Student.cs                 # Student entity (bug here!)
+│   ├── Student.cs                 # Student entity with validation
 │   └── ErrorViewModel.cs          # Error view model
 ├── Views/
 │   ├── Home/                      # Home page views
-│   ├── Students/                  # Student CRUD views (bugs here!)
+│   ├── Students/                  # Student CRUD views
 │   └── Shared/                    # Layout and shared views
 ├── wwwroot/                       # Static files (CSS, JS)
-├── Program.cs                     # App entry point
-└── appsettings.json               # Configuration
+├── Program.cs                     # App entry point & DB setup
+├── appsettings.json               # 🔑 Configuration — YOUR CLUE for the DB name!
+└── scaffold.bat                   # Database migration script
 ```
 
 ---
@@ -126,7 +173,7 @@ Create a document (PDF or DOCX) with the following for **each bug** you find:
 
 - **DO NOT** look at the git blame or commit messages for hints about the bugs
 - Work **individually** unless your instructor says otherwise
-- Make sure you've run `scaffold.bat` before running the application
+- Make sure you've **created the database** and run `scaffold.bat` before running the application
 - If the app crashes, read the exception message — it's a clue!
 - There are exactly **7 bugs** — keep looking until you find them all
 
@@ -141,60 +188,45 @@ Create a document (PDF or DOCX) with the following for **each bug** you find:
 
 ---
 
-## ❓ Frequently Asked Questions
+## 🔧 Troubleshooting
 
-**Q: Do I need to create the database manually in SSMS?**
-No. The `scaffold.bat` script handles everything — it creates the migration files and applies them to automatically create the database in LocalDB. You do **not** need to open SQL Server Management Studio or manually create any database.
+**The connection string doesn't match my SQL Server setup.**
+If you're not using LocalDB, update the `Server` value in `appsettings.json`:
+- SQL Server Express: `Server=.\SQLEXPRESS` or `Server=YOUR_PC_NAME\SQLEXPRESS`
+- Full SQL Server: `Server=YOUR_PC_NAME` or `Server=localhost`
 
-**Q: What is LocalDB?**
-LocalDB is a lightweight version of SQL Server that comes pre-installed with Visual Studio. It runs on demand and requires no configuration. Your database files are stored automatically under your user profile.
-
-**Q: How do I check if LocalDB is installed?**
-Open a terminal and run:
+**How do I check if LocalDB is installed?**
 ```bash
 sqllocaldb info
 ```
 You should see `MSSQLLocalDB` listed. If not, install it via the Visual Studio Installer under **Individual Components → SQL Server Express LocalDB**.
 
-**Q: I get an error saying `dotnet-ef` is not recognized. What do I do?**
-Install the EF Core CLI tool globally by running:
+**`dotnet-ef` is not recognized.**
 ```bash
 dotnet tool install --global dotnet-ef
 ```
-Then close and reopen your terminal before running `scaffold.bat` again.
+Close and reopen your terminal afterward.
 
-**Q: I get a connection error when running the app. How do I fix it?**
-Make sure LocalDB is running. You can start it manually with:
-```bash
-sqllocaldb start MSSQLLocalDB
-```
-If that doesn't work, check that your `appsettings.json` connection string matches your local setup. If you're using SQL Server Express instead of LocalDB, update the `Server` value to `Server=.\SQLEXPRESS` or `Server=YOUR_PC_NAME\SQLEXPRESS`.
-
-**Q: The scaffold script says "migration already exists." What do I do?**
-If a `Migrations` folder already exists in the project, delete it and run `scaffold.bat` again:
+**The scaffold script says "migration already exists."**
+Delete the existing Migrations folder and try again:
 ```bash
 rmdir /s /q BuggyStudentCRUD\Migrations
 scaffold.bat
 ```
 
-**Q: How do I reset the database and start fresh?**
-Run the following commands from the `BuggyStudentCRUD` project folder:
+**How do I reset the database and start fresh?**
+Run from the `BuggyStudentCRUD` project folder:
 ```bash
 dotnet ef database drop --force
 dotnet ef database update
 ```
-This will delete the existing database and recreate it. The seed data will be re-inserted on the next app run.
+The seed data will be re-inserted on the next app run.
 
-**Q: Can I view the database tables and data?**
-Yes. You can connect to the database using:
-- **SQL Server Management Studio (SSMS)** — connect to `(localdb)\mssqllocaldb`
-- **Visual Studio** — open **View → SQL Server Object Explorer**
-- **Azure Data Studio** — connect to `(localdb)\mssqllocaldb`
+**How do I view the database tables and data?**
+Connect to your SQL Server using SSMS or Azure Data Studio and look for the database you created. You should see a `Students` table under **Tables**.
 
-Look for the database named `BuggyStudentCRUDDb`.
-
-**Q: The app runs but no students appear on the list. Why?**
-This could be one of the bugs you need to find, or the database may not have been seeded. Try resetting the database (see above). If students still don't appear, investigate the controller code — that's a hint! 😉
+**The app runs but no students appear.**
+This could be one of the bugs — or the database might not have been seeded. Try resetting the database (see above). If students still don't appear, investigate the controller code — that's a hint! 😉
 
 ---
 
