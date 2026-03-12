@@ -60,24 +60,36 @@ Open `appsettings.json` inside the `BuggyStudentCRUD` project folder — this fi
 
 > 💡 **Tip:** If you're using SQL Server Express or a named instance instead of LocalDB, you'll also need to update the `Server=` value in `appsettings.json` to match your setup (e.g., `Server=.\SQLEXPRESS`).
 
-### Step 3: Run the Scaffold Script
+### Step 3: Create the Table
 
-Once your database is created, run the scaffold script to set up the tables:
+You have **two options** — pick whichever works for you:
+
+#### Option A: Run the Scaffold Script (automatic)
 
 ```bash
 scaffold.bat
 ```
 
-This will:
-- Restore NuGet packages
-- Create the EF Core migration files
-- Apply the migration to your database (creating the `Students` table)
+This will restore packages, install the correct EF Core tool version, create migration files, and apply them to your database.
 
-> **Note:** If you get an error saying `dotnet-ef` is not recognized, install it first:
-> ```bash
-> dotnet tool install --global dotnet-ef
-> ```
-> Then **close and reopen** your terminal before running `scaffold.bat` again.
+#### Option B: Create the Table Manually in SSMS (if scaffold doesn't work)
+
+If you run into issues with the scaffold script, you can create the table yourself. Run this SQL script in SSMS against your database:
+
+```sql
+CREATE TABLE [Students] (
+    [Id]             INT            IDENTITY(1,1) NOT NULL PRIMARY KEY,
+    [FirstName]      NVARCHAR(50)   NOT NULL,
+    [LastName]       NVARCHAR(50)   NOT NULL,
+    [Email]          NVARCHAR(MAX)  NOT NULL,
+    [Course]         NVARCHAR(100)  NOT NULL,
+    [YearLevel]      INT            NOT NULL,
+    [GPA]            FLOAT          NOT NULL,
+    [EnrollmentDate] DATETIME2      NOT NULL
+);
+```
+
+> 📌 Make sure you run this on the correct database (the one you created in Step 2).
 
 ### Step 4: Run the Application
 

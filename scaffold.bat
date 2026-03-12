@@ -6,7 +6,7 @@ echo.
 
 cd /d "%~dp0BuggyStudentCRUD"
 
-echo [1/3] Restoring NuGet packages...
+echo [1/4] Restoring NuGet packages...
 dotnet restore
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR: Failed to restore packages.
@@ -15,18 +15,26 @@ if %ERRORLEVEL% NEQ 0 (
 )
 echo.
 
-echo [2/3] Creating initial migration...
-dotnet ef migrations add InitialCreate
+echo [2/4] Restoring local EF Core tool (v6.0.25)...
+dotnet tool restore
 if %ERRORLEVEL% NEQ 0 (
-    echo ERROR: Failed to create migration. Make sure dotnet-ef tool is installed.
-    echo Run: dotnet tool install --global dotnet-ef
+    echo ERROR: Failed to restore dotnet-ef tool.
     pause
     exit /b 1
 )
 echo.
 
-echo [3/3] Applying migration to database...
-dotnet ef database update
+echo [3/4] Creating initial migration...
+dotnet dotnet-ef migrations add InitialCreate
+if %ERRORLEVEL% NEQ 0 (
+    echo ERROR: Failed to create migration.
+    pause
+    exit /b 1
+)
+echo.
+
+echo [4/4] Applying migration to database...
+dotnet dotnet-ef database update
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR: Failed to update database.
     pause
@@ -36,6 +44,6 @@ echo.
 
 echo ==========================================
 echo  Database setup complete!
-echo  Database: BuggyStudentCRUDDb (LocalDB)
+echo  Database: BuggyStudentCRUDDb
 echo ==========================================
 pause
