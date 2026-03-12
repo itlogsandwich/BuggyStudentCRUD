@@ -2,7 +2,7 @@
 
 ## ASP.NET Core MVC Bug Hunting Exercise
 
-This is a **Student Records Management System** built with ASP.NET Core 6.0 MVC and Entity Framework Core. It has been **intentionally coded with several bugs** for you to find and fix as part of your practical lab activity.
+This is a **Student Records Management System** built with ASP.NET Core MVC and Entity Framework Core. It has been **intentionally coded with several bugs** for you to find and fix as part of your practical lab activity.
 
 ---
 
@@ -10,7 +10,7 @@ This is a **Student Records Management System** built with ASP.NET Core 6.0 MVC 
 
 Before you begin, make sure you have the following installed on your machine:
 
-- [.NET 6.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) (or .NET 9.0)
 - A code editor — **Visual Studio 2022** (recommended), VS Code, or Rider
 - [Git](https://git-scm.com/downloads)
 - **SQL Server** — one of the following:
@@ -213,8 +213,8 @@ Create a document (PDF or DOCX) with the following for **each bug** you find:
 
 ## 🛠 Tech Stack
 
-- **Framework:** ASP.NET Core 6.0 MVC
-- **ORM:** Entity Framework Core 6.0 (SQL Server)
+- **Framework:** ASP.NET Core 8.0 MVC
+- **ORM:** Entity Framework Core 8.0 (SQL Server)
 - **Frontend:** Bootstrap 5, Font Awesome 6
 - **Language:** C# 10
 
