@@ -27,8 +27,9 @@ namespace BuggyStudentCRUD.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {
                 students = students.Where(s => s.FirstName.Contains(searchString)
-                    && s.LastName.Contains(searchString)
-                    && s.Course.Contains(searchString));
+                    || s.LastName.Contains(searchString)
+                    || s.Course.Contains(searchString));
+                //Fixed Search - 1.
             }
 
             switch (sortOrder)
@@ -65,7 +66,8 @@ namespace BuggyStudentCRUD.Controllers
             }
 
             var student = await _context.Students
-                .FirstOrDefaultAsync(m => m.Id != id);
+                .FirstOrDefaultAsync(m => m.Id == id);
+                //Fixed View Details - 2
 
             if (student == null)
             {
@@ -86,7 +88,7 @@ namespace BuggyStudentCRUD.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,Email,Course,YearLevel,GPA,EnrollmentDate")] Student student)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid) //Fixed Creation - 4
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
@@ -125,7 +127,7 @@ namespace BuggyStudentCRUD.Controllers
             {
                 try
                 {
-                    _context.Add(student);
+                    _context.Update(student); // Fixed Update - 5
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -170,7 +172,7 @@ namespace BuggyStudentCRUD.Controllers
             var student = await _context.Students.FindAsync(id);
             if (student != null)
             {
-
+                _context.Students.Remove(student); //Fixed Delete - 3
             }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
